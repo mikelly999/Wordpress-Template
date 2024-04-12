@@ -61,10 +61,6 @@ window.addEventListener("DOMContentLoaded", function () {
 
 	if (announcementBar) {
 		handleAnnouncementBar();
-		// window.addEventListener("scroll", function () {
-		// 	handleViewportHeight();
-		// 	handleAnnouncementBar();
-		// });
 		window.addEventListener("resize", function () {
 			handleViewportHeight();
 			handleAnnouncementBar();

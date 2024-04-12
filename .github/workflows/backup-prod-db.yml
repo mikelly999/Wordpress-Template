@@ -22,6 +22,4 @@ jobs:
           allenvs: true
           script: |
             cd /home/ubuntu/cytogam
-            docker compose exec db mysqldump -u "$INPUT_MYSQL_USER" -p"$INPUT_MYSQL_PASSWORD" "$INPUT_MYSQL_DATABASE" > /home/ubuntu/test3.sql
-            cat /home/ubuntu/test3.sql
-
+            docker compose exec db mysqldump -u "$INPUT_MYSQL_USER" -p"$INPUT_MYSQL_PASSWORD" "$INPUT_MYSQL_DATABASE" > /home/ubuntu/db_backups/backup.sql

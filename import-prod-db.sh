@@ -1,2 +1,0 @@
-scp  -o StrictHostKeyChecking=no -i ~/cytogam.pem ubuntu@18.215.245.47:/home/ubuntu/db_backups/prod.sql ~/db_backups/prod.sql
-docker compose exec -T db sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' < /home/ubuntu/db_backups/prod.sql
