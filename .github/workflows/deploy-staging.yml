@@ -1,0 +1,39 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches:
+      - staging
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Copy Repository to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AWS_EC2_HOST_STAGING }}
+          username: ubuntu
+          key: ${{ secrets.AWS_EC2_PEM }}
+          source: ./
+          target: /home/ubuntu/cytogam
+          debug: true
+          timeout: 120s
+      
+      - name: Restart Docker
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AWS_EC2_HOST_STAGING }}
+          username: ubuntu
+          key: ${{ secrets.AWS_EC2_PEM }}
+          port: 22
+          script: |
+            cd /home/ubuntu/cytogam
+            pwd
+            docker compose -f docker-compose.prod.yml down --remove orphans
+            docker compose -f docker-compose.prod.yml up -d --build --force-recreate

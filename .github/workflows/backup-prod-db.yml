@@ -1,0 +1,27 @@
+name: Backup prod db
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Backup prod db
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          INPUT_MYSQL_USER: wordpressuser
+          INPUT_MYSQL_PASSWORD: your_db_password
+          INPUT_MYSQL_DATABASE: wordpress
+        with:
+          host: ${{ secrets.AWS_EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.AWS_EC2_PEM }}
+          port: 22
+          allenvs: true
+          script: |
+            cd /home/ubuntu/cytogam
+            docker compose exec db mysqldump -u "$INPUT_MYSQL_USER" -p"$INPUT_MYSQL_PASSWORD" "$INPUT_MYSQL_DATABASE" > /home/ubuntu/test3.sql
+            cat /home/ubuntu/test3.sql
+
